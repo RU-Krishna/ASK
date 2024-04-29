@@ -61,7 +61,7 @@ fun ForgotPasswordScreen(
                     .padding(vertical = 16.dp)
             ) {
                 Text(
-                    text = "Ask",
+                    text = "ASK",
                     fontFamily = FontFamily.Serif,
                     fontSize = 48.sp,
                     fontWeight = FontWeight.Bold,

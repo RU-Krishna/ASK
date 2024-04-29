@@ -82,7 +82,7 @@ fun SignUpScreen(
                     .padding(vertical = 16.dp)
             ) {
                 Text(
-                    text = "Ask",
+                    text = "ASk",
                     fontFamily = FontFamily.Serif,
                     fontSize = 48.sp,
                     fontWeight = FontWeight.Bold,
