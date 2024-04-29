@@ -10,7 +10,7 @@ interface ChatRecordRepo {
 
     suspend fun deleteRecord(recordId: String)
 
-    suspend fun updateRecordName(recordName: String)
+    suspend fun updateRecordName(recordId: String, recordName: String)
 
     suspend fun fetchRecords(): Flow<List<ChatRecord>>
 

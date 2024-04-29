@@ -56,7 +56,7 @@ android {
 
 dependencies {
 
-    implementation(project(":features:gemini"))
+    implementation(project(":features:ask"))
     implementation(project(":features:auth"))
     implementation(project(":data:chat"))
     implementation(project(":data:model"))

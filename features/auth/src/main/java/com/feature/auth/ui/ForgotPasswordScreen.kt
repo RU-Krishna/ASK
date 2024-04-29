@@ -17,15 +17,18 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.feature.auth.stateHandler.HandleForgotPasswordState
 import com.feature.auth.viewModels.ForgotPasswordViewModel
 
@@ -52,7 +55,19 @@ fun ForgotPasswordScreen(
             verticalArrangement = Arrangement.spacedBy(space = 16.dp, alignment = Alignment.Top)
         ) {
             // App Logo
-            Text(text = "App Logo", style = MaterialTheme.typography.headlineLarge)
+            Column(
+                verticalArrangement = Arrangement.Center,
+                modifier = modifier
+                    .padding(vertical = 16.dp)
+            ) {
+                Text(
+                    text = "Ask",
+                    fontFamily = FontFamily.Serif,
+                    fontSize = 48.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontStyle = FontStyle.Italic,
+                )
+            }
 
             Text("Enter your email to get the reset password link.")
 

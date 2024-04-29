@@ -5,3 +5,4 @@ data class Chat(
     var userPrompt: String = "",
     var modelReply: String = "",
 )
+

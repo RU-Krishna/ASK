@@ -25,7 +25,7 @@ enum class AuthScreen(val route: String) {
 
 fun NavGraphBuilder.authNavGraph(
     navController: NavHostController,
-    firebaseAuth: FirebaseAuth
+    firebaseAuth: FirebaseAuth,
 ) {
     navigation(
         startDestination = AuthScreen.SignIn.route,

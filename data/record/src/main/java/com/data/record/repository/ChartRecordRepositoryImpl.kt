@@ -17,8 +17,8 @@ class ChatRecordRepoImpl(
         chatRecordDAO.deleteRecord(recordId)
     }
 
-    override suspend fun updateRecordName(recordName: String) {
-        chatRecordDAO.updateRecordName(recordName)
+    override suspend fun updateRecordName(recordId: String, recordName: String) {
+        chatRecordDAO.updateRecordName(recordId,recordName)
     }
 
     override suspend fun fetchRecords(): Flow<List<ChatRecord>> {

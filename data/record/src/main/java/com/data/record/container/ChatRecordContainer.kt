@@ -44,8 +44,13 @@ class ChatRecordContainerImpl(
                 }
         }
 
-        override suspend fun updateRecordName(recordName: String) {
-            TODO("Not yet implemented")
+        override suspend fun updateRecordName(recordId: String, recordName: String) {
+            databaseReference
+        .child(recordId).child("title").setValue(recordName)
+                .addOnFailureListener { e ->
+                    throw(e)
+                }
+
         }
 
         override suspend fun fetchRecords(): Flow<List<ChatRecord>> {

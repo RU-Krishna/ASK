@@ -20,9 +20,9 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Gemini"
+rootProject.name = "Ask"
 include(":app")
-include(":features:gemini")
+include(":features:ask")
 include(":features:auth")
 include(":data:model")
 include(":data:record")

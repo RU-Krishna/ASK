@@ -14,7 +14,6 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -27,11 +26,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.feature.auth.R
 import com.feature.auth.stateHandler.HandleAuthenticationState
 import com.feature.auth.viewModels.SignInViewModel
@@ -62,10 +65,19 @@ fun SignInScreen(
             verticalArrangement = Arrangement.spacedBy(space = 16.dp, alignment = Alignment.CenterVertically)
         ) {
             // App Logo and Name
-            Column {
-                Text(text = "App Logo", style = MaterialTheme.typography.headlineLarge)
-                Text(text = "App Name", style = MaterialTheme.typography.headlineMedium)
-            }
+           Column(
+               verticalArrangement = Arrangement.Center,
+               modifier = modifier
+                   .padding(vertical = 16.dp)
+           ) {
+               Text(
+                   text = "Ask",
+                   fontFamily = FontFamily.Serif,
+                   fontSize = 48.sp,
+                   fontWeight = FontWeight.Bold,
+                   fontStyle = FontStyle.Italic,
+               )
+           }
 
             // Email Field
             OutlinedTextField(

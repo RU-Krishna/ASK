@@ -16,7 +16,7 @@ import java.util.Calendar
 
 class RecordViewModel : ViewModel() {
 
-    var currentChatId = mutableStateOf("")
+    var currentRecordId = mutableStateOf("")
     private set
 
     lateinit var recordRepo: ChatRecordRepo
@@ -32,12 +32,12 @@ class RecordViewModel : ViewModel() {
     }
 
     fun modifyLandingPage() {
-            addRecord(currentChatId.value)
-            Log.d("CurrentIdX", currentChatId.value + " "+ Calendar.getInstance().time.toString())
+            addRecord(currentRecordId.value)
+            Log.d("CurrentIdX", currentRecordId.value + " "+ Calendar.getInstance().time.toString())
 
     }
 
-    private fun addRecord(chatId: String) {
+   fun addRecord(chatId: String) {
         try {
             viewModelScope.launch(Dispatchers.IO) {
                 recordRepo.addRecord(
@@ -72,13 +72,29 @@ class RecordViewModel : ViewModel() {
        }
     }
 
-    fun changeCurrentChat(recordId: String) {
+    fun changeCurrentRecord(recordId: String) {
             isLandingPage.value = false
-            currentChatId.value = recordId
+            currentRecordId.value = recordId
     }
 
     fun noRecordOrEmptyChat() {
         isLandingPage.value = true
+    }
+
+    fun changeRecordName(recordId: String, title: String) {
+        try {
+
+            viewModelScope.launch(
+                Dispatchers.IO
+            ) {
+                recordRepo.updateRecordName(
+                    recordId, title
+                )
+            }
+        }
+        catch (e: Exception) {
+            Log.d("exception", e.message?:"Exception in renaming title")
+        }
     }
 
 
