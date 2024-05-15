@@ -57,6 +57,8 @@ android {
 dependencies {
 
     implementation(project(":data:model"))
+    implementation(project(":data:modelSettings"))
+
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)

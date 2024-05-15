@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.gemini.MyApplication
 import com.example.gemini.viewModel.RecordViewModel
+import com.example.modelsettings.repo.SettingRepositoryImpl
 import com.features.ask.viewmodel.AskViewModel
 
 val geminiViewModel = object: ViewModelProvider.Factory {
@@ -17,8 +18,11 @@ val geminiViewModel = object: ViewModelProvider.Factory {
 
         val repository = application.chatContainer.firebaseRepo
 
+        val settingsRepo = SettingRepositoryImpl(application.baseContext)
+
         return AskViewModel(
-            firebaseRepo = repository
+            firebaseRepo = repository,
+            settingsRepo = settingsRepo
         ) as T
     }
 }

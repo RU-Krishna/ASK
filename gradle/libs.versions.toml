@@ -1,23 +1,25 @@
 [versions]
 agp = "8.3.2"
 kotlin = "1.9.20"
-coreKtx = "1.13.0"
+coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.7.0"
 activityCompose = "1.9.0"
 secretGradlePlugin = "2.0.1"
-generativAi = "0.4.0"
-composeBom = "2024.04.01"
+generativAi = "0.6.0"
+composeBom = "2024.05.00"
 appcompat = "1.6.1"
-material = "1.11.0"
-firebaseBom = "32.8.1"
+material = "1.12.0"
+firebaseBom = "33.0.0"
 googleServices = "4.4.1"
 composeNavigation = "2.7.7"
 lifecycle = "2.7.0"
-fonts = "1.6.6"
+fonts = "1.6.7"
 coil = "2.6.0"
+dataStore = "1.1.1"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -44,6 +46,7 @@ compose-navigation= { group = "androidx.navigation", name = "navigation-compose"
 compose-lifecycle-state = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose",version.ref = "lifecycle" }
 googel-fonts = {  group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "fonts" }
 coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil"}
+preferences-dataStore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "dataStore"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

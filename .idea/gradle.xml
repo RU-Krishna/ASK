@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/data/chat" />
             <option value="$PROJECT_DIR$/data/model" />
+            <option value="$PROJECT_DIR$/data/modelSettings" />
             <option value="$PROJECT_DIR$/data/record" />
             <option value="$PROJECT_DIR$/features" />
             <option value="$PROJECT_DIR$/features/ask" />

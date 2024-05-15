@@ -112,14 +112,16 @@ class MainActivity : ComponentActivity() {
                         startDestination = route,
                     ) {
 
+                        if(!isSplashScreen) {
+                            authXViewModel = authViewModel
+
+                            authViewModel.addAuthStateListener()
+                        }
+
                         composable(
                             route = "splash"
                         ) {
                             AskSplashScreen {
-                                authXViewModel = authViewModel
-
-                                authViewModel.addAuthStateListener()
-
                                 isSplashScreen = false
                             }
                         }
@@ -131,6 +133,7 @@ class MainActivity : ComponentActivity() {
                         )
 
                         appGraph(
+                            navController  = navController,
                             currentUser = currentUser,
                             logOut = {
                                 Toast

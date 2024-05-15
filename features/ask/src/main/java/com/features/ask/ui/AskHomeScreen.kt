@@ -105,7 +105,8 @@ fun GeminiHomeScreen(
     addNewChat: () -> Unit = {},
     answerThis: (String) -> Unit = {},
     renameTitle: (String, String) -> Unit = {_, _ -> },
-    userName: String = ""
+    userName: String = "",
+    askSettings:() -> Unit = {}
 ) {
 
 
@@ -130,7 +131,7 @@ fun GeminiHomeScreen(
         }
     }
 
-
+    Box(modifier = modifier.fillMaxSize()) {
         ModalNavigationDrawer(
             drawerContent = {
                 ModalDrawerSheet(
@@ -169,95 +170,13 @@ fun GeminiHomeScreen(
                                     it.chatId
                                 }) { record ->
 
-                                        NavigationDrawerItem(
-                                            label = {
-                                                Row(
-                                                    verticalAlignment = Alignment.CenterVertically,
-                                                    modifier = Modifier
-                                                        .fillMaxWidth()
-                                                ) {
-                                                    AnimatedVisibility(
-                                                        visible = onLongClickRenameId != record.chatId,
-                                                        enter = fadeIn(
-                                                            tween(
-                                                                durationMillis = 200,
-                                                                easing = FastOutLinearInEasing
-                                                            )
-                                                        ),
-                                                        exit = fadeOut(
-                                                            tween(
-                                                                durationMillis = 200,
-                                                                easing = FastOutLinearInEasing
-                                                            )
-                                                        )
-                                                    ) {
-                                                        Text(
-                                                            text = record.title.ifEmpty { record.chatId },
-                                                            fontFamily = FontFamily.Serif,
-                                                            fontWeight = FontWeight.Normal,
-                                                            fontSize = 16.sp,
-                                                            maxLines = 1,
-                                                            minLines = 1,
-                                                            overflow = TextOverflow.Ellipsis,
-                                                            modifier = modifier
-                                                                .combinedClickable(
-                                                                    enabled = true,
-                                                                    onLongClickLabel = "Rename the Title",
-                                                                    onLongClick = {
-                                                                        onLongClickRenameId =
-                                                                            record.chatId
-                                                                    }) {
-                                                                    onLongClickRenameId = ""
-                                                                }
-                                                                .clip(RoundedCornerShape(16.dp))
-                                                        )
-                                                    }
-                                                    AnimatedVisibility(
-                                                        visible = onLongClickRenameId == record.chatId,
-                                                        enter = fadeIn(
-                                                            tween(
-                                                                durationMillis = 200,
-                                                                easing = FastOutLinearInEasing
-                                                            )
-                                                        ),
-                                                        exit = fadeOut(
-                                                            tween(
-                                                                durationMillis = 200,
-                                                                easing = FastOutLinearInEasing
-                                                            )
-                                                        )
-                                                    ) {
-                                                        ChangeTitleDialog(
-                                                            modifier = modifier
-                                                                .wrapContentSize(),
-                                                            changeTitle = { name ->
-                                                                renameTitle(
-                                                                    record.chatId,
-                                                                    name
-                                                                )
-
-                                                            },
-                                                            onDoneCallback = {
-                                                                onLongClickRenameId = ""
-                                                            }
-                                                        )
-                                                    }
-                                                }
-                                            },
-                                            selected = record.chatId == currentChatId,
-                                            onClick = {
-                                                onRecordClick(record.chatId)
-                                                coroutineScope.launch(Dispatchers.IO) {
-                                                    drawerState.close()
-                                                }
-                                            },
-                                            icon = {
-                                                Icon(
-                                                    painter = painterResource(id = R.drawable.chat),
-                                                    contentDescription = "Chats"
-                                                )
-                                            },
-                                            badge = {
+                                    NavigationDrawerItem(
+                                        label = {
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                            ) {
                                                 AnimatedVisibility(
                                                     visible = onLongClickRenameId != record.chatId,
                                                     enter = fadeIn(
@@ -273,27 +192,109 @@ fun GeminiHomeScreen(
                                                         )
                                                     )
                                                 ) {
-                                                    Box(
+                                                    Text(
+                                                        text = record.title.ifEmpty { record.chatId },
+                                                        fontFamily = FontFamily.Serif,
+                                                        fontWeight = FontWeight.Normal,
+                                                        fontSize = 16.sp,
+                                                        maxLines = 1,
+                                                        minLines = 1,
+                                                        overflow = TextOverflow.Ellipsis,
                                                         modifier = modifier
-                                                            .wrapContentHeight()
-                                                    ) {
-                                                        IconButton(
-                                                            onClick = {
-                                                                onDeleteRecord(record.chatId)
+                                                            .combinedClickable(
+                                                                enabled = true,
+                                                                onLongClickLabel = "Rename the Title",
+                                                                onLongClick = {
+                                                                    onLongClickRenameId =
+                                                                        record.chatId
+                                                                }) {
+                                                                onLongClickRenameId = ""
                                                             }
-                                                        ) {
-                                                            Icon(
-                                                                imageVector = Icons.Default.Delete,
-                                                                contentDescription = "Delete Record",
+                                                            .clip(RoundedCornerShape(16.dp))
+                                                    )
+                                                }
+                                                AnimatedVisibility(
+                                                    visible = onLongClickRenameId == record.chatId,
+                                                    enter = fadeIn(
+                                                        tween(
+                                                            durationMillis = 200,
+                                                            easing = FastOutLinearInEasing
+                                                        )
+                                                    ),
+                                                    exit = fadeOut(
+                                                        tween(
+                                                            durationMillis = 200,
+                                                            easing = FastOutLinearInEasing
+                                                        )
+                                                    )
+                                                ) {
+                                                    ChangeTitleDialog(
+                                                        modifier = modifier
+                                                            .wrapContentSize(),
+                                                        changeTitle = { name ->
+                                                            renameTitle(
+                                                                record.chatId,
+                                                                name
                                                             )
+
+                                                        },
+                                                        onDoneCallback = {
+                                                            onLongClickRenameId = ""
                                                         }
+                                                    )
+                                                }
+                                            }
+                                        },
+                                        selected = record.chatId == currentChatId,
+                                        onClick = {
+                                            onRecordClick(record.chatId)
+                                            coroutineScope.launch(Dispatchers.IO) {
+                                                drawerState.close()
+                                            }
+                                        },
+                                        icon = {
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.chat),
+                                                contentDescription = "Chats"
+                                            )
+                                        },
+                                        badge = {
+                                            AnimatedVisibility(
+                                                visible = onLongClickRenameId != record.chatId,
+                                                enter = fadeIn(
+                                                    tween(
+                                                        durationMillis = 200,
+                                                        easing = FastOutLinearInEasing
+                                                    )
+                                                ),
+                                                exit = fadeOut(
+                                                    tween(
+                                                        durationMillis = 200,
+                                                        easing = FastOutLinearInEasing
+                                                    )
+                                                )
+                                            ) {
+                                                Box(
+                                                    modifier = modifier
+                                                        .wrapContentHeight()
+                                                ) {
+                                                    IconButton(
+                                                        onClick = {
+                                                            onDeleteRecord(record.chatId)
+                                                        }
+                                                    ) {
+                                                        Icon(
+                                                            imageVector = Icons.Default.Delete,
+                                                            contentDescription = "Delete Record",
+                                                        )
                                                     }
                                                 }
-                                            },
-                                            shape = RoundedCornerShape(
-                                                16.dp
-                                            )
+                                            }
+                                        },
+                                        shape = RoundedCornerShape(
+                                            16.dp
                                         )
+                                    )
                                     HorizontalDivider(
                                         thickness = 2.dp,
                                         color = MaterialTheme.colorScheme.outline,
@@ -330,7 +331,7 @@ fun GeminiHomeScreen(
                     ) {
                         TextButton(
                             onClick = {
-                                      logOut()
+                                logOut()
                             },
                             shape = RoundedCornerShape(4.dp),
                             border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
@@ -380,7 +381,7 @@ fun GeminiHomeScreen(
                     coroutineScope.launch {
                         if (drawerState.isOpen)
                             onLongClickRenameId = ""
-                            drawerState.close()
+                        drawerState.close()
                     }
                 }
         ) {
@@ -392,9 +393,9 @@ fun GeminiHomeScreen(
                 isLandingPage = isLandingPage,
                 modifyLandingPage = modifyLandingPage,
                 showRecords = {
-                        coroutineScope.launch {
-                            drawerState.open()
-                        }
+                    coroutineScope.launch {
+                        drawerState.open()
+                    }
 
                 },
                 currentChatId = currentChatId,
@@ -405,9 +406,16 @@ fun GeminiHomeScreen(
                 errorOperationStateRelax = viewModel::errorOperationStateRelax,
                 addNewChat = addNewChat,
                 answerThis = answerThis,
-                userName = userName
+                userName = userName,
+                askSettings = {
+                    coroutineScope.launch {
+                        drawerState.close()
+                    }
+                    askSettings()
+                }
             )
         }
+    }
 
 
 }
@@ -429,6 +437,7 @@ fun GeminiScaffold(
     addNewChat: () -> Unit,
     answerThis: (String) -> Unit = {},
     userName: String,
+    askSettings: () -> Unit,
     context: Context = LocalContext.current
 ) {
 
@@ -512,7 +521,8 @@ fun GeminiScaffold(
     Scaffold(
         topBar = {
             GeminiAppBar(
-                showRecords = showRecords
+                showRecords = showRecords,
+                askSettings = askSettings
             )
         },
         bottomBar = {

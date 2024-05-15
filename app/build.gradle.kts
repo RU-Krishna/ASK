@@ -61,6 +61,7 @@ dependencies {
     implementation(project(":data:chat"))
     implementation(project(":data:model"))
     implementation(project(":data:record"))
+    implementation(project(":data:modelSettings"))
     implementation(project(":common:ui"))
 
     implementation(libs.androidx.core.ktx)
@@ -81,6 +82,8 @@ dependencies {
 
     implementation(libs.compose.lifecycle.state)
 
+
+    implementation(libs.generatievAi)
 
 
     //Navigation
