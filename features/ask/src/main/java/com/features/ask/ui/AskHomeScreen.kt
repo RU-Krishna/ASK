@@ -1,10 +1,13 @@
 package com.features.ask.ui
 
+import android.Manifest
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -76,6 +79,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.core.content.PermissionChecker
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.data.model.firebaseData.Chat
 import com.data.model.firebaseData.ChatRecord
@@ -84,6 +90,7 @@ import com.features.ask.viewmodel.AskViewModel
 import com.features.gemini.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
 import java.util.Calendar
 
 
@@ -461,6 +468,19 @@ fun GeminiScaffold(
         mutableListOf<Bitmap>()
     }
 
+    var cameraPermission by remember {
+        mutableStateOf(
+            PermissionChecker.checkSelfPermission(
+                context,
+                Manifest.permission.CAMERA
+            )
+            == PermissionChecker.PERMISSION_GRANTED
+        )
+    }
+
+
+    var uri: Lazy<Uri> = context.createUri()
+
 
 
     val askImageLauncher = rememberLauncherForActivityResult(
@@ -477,6 +497,34 @@ fun GeminiScaffold(
         }
 
     }
+
+    val captureImageLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.TakePicture()
+    ) {
+        askImage.add(uri.value)
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+            askImageBitmap
+                .add(
+                    MediaStore.Images.Media.getBitmap(context.contentResolver, uri.value)
+                )
+        }
+    }
+
+
+    val captureImagePermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        cameraPermission = isGranted
+        if(!isGranted)
+            Toast.makeText(
+                context,
+                "Camera Permission Denied🚫",
+                LENGTH_SHORT
+            )
+                .show()
+    }
+
+
 
 
     when (operationState) {
@@ -580,6 +628,21 @@ fun GeminiScaffold(
                     },
                     onRemoveImage = { removedImage ->
                         askImage.remove(removedImage)
+                    },
+                    captureImage = {
+                        coroutineScope.launch(
+                            Dispatchers.IO
+                        ) {
+                            if(cameraPermission) {
+                                uri = context.createUri()
+                                captureImageLauncher.launch(uri.value)
+                            }
+                            else
+                                captureImagePermissionLauncher.launch(
+                                    Manifest.permission.CAMERA
+                                )
+
+                        }
                     }
                 )
             }
@@ -698,3 +761,20 @@ fun GeminiScaffold(
     }
 }
 
+fun Context.createImageFile(): File {
+    val timeStamp = Calendar.getInstance().time.toString()
+    val image = File.createTempFile(
+        timeStamp, /* prefix */
+        ".jpg", /* suffix */
+        cacheDir      /* directory */
+    )
+    return image
+}
+
+fun Context.createUri(): Lazy<Uri> = lazy {
+    FileProvider.getUriForFile(
+        this,
+        ContextCompat.getString(this, R.string.fileprovider),
+        createImageFile()
+    )
+}

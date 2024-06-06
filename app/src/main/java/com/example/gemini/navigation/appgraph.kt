@@ -106,7 +106,8 @@ fun NavGraphBuilder.appGraph(
                 onDeleteRecord = { recordId ->
                     recordViewModel.deleteRecord(recordId)
                     geminiViewModel.deleteChat(recordId, "")
-                    recordViewModel.noRecordOrEmptyChat()
+                    if(currentRecordId == recordId)
+                        recordViewModel.noRecordOrEmptyChat()
                 },
                 logOut = logOut,
                 addNewChat = {
@@ -212,6 +213,9 @@ fun returnBlockThreshold(value: Float): String {
         else -> BlockThreshold.UNSPECIFIED.name
     }
 }
+
+
+
 
 
 

@@ -240,7 +240,8 @@ fun GeminiSearchSection(
     enabled: () -> Boolean = { true },
     pickImage: () -> Unit = {},
     images: () -> List<Uri> = { listOf() },
-    onRemoveImage: (Uri) -> Unit
+    onRemoveImage: (Uri) -> Unit,
+    captureImage: () -> Unit
 ) {
 
     var value by remember {
@@ -248,6 +249,8 @@ fun GeminiSearchSection(
     }
 
     val focusManager = LocalFocusManager.current
+
+
 
     Column(
         verticalArrangement = Arrangement.Bottom,
@@ -268,16 +271,18 @@ fun GeminiSearchSection(
                 }
             )
         ) {
-           Box(modifier = modifier
-               .background(
-                   color = MaterialTheme.colorScheme.surfaceContainer,
-                   shape = RoundedCornerShape(16.dp)
-               )) {
-               ImageRow(
-                   imageList = images(),
-                   onRemoveImage = onRemoveImage
-               )
-           }
+            Box(
+                modifier = modifier
+                    .background(
+                        color = MaterialTheme.colorScheme.surfaceContainer,
+                        shape = RoundedCornerShape(16.dp)
+                    )
+            ) {
+                ImageRow(
+                    imageList = images(),
+                    onRemoveImage = onRemoveImage
+                )
+            }
 
 
         }
@@ -324,15 +329,17 @@ fun GeminiSearchSection(
                             )
 
                         }
-//                    IconButton(onClick = { /*TODO*/ }) {
-//                        Icon(
-//                            painter = painterResource(id = R.drawable.photo_camera),
-//                            contentDescription = "Take Photo",
-//                            modifier = modifier
-//                                .size(32.dp)
-//                        )
-//
-//                    }
+                        IconButton(onClick = {
+                            captureImage()
+                        }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.photo_camera),
+                                contentDescription = "Take Photo",
+                                modifier = modifier
+                                    .size(32.dp)
+                            )
+
+                        }
                         IconButton(
                             onClick = {
                                 onSearchCallback(value.trim())
